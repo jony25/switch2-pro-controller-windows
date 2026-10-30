@@ -1,0 +1,24 @@
+name: build-exe
+
+on:
+  workflow_dispatch: {}
+  push:
+    tags: ['v*']
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Publish single-file exe
+        run: >
+          dotnet publish src/Switch2ProManager/Switch2ProManager.csproj -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true -o dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Switch2ProManager-win-x64
+          path: dist/Switch2ProManager.exe

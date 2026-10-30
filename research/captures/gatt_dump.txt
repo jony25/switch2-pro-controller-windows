@@ -1,0 +1,39 @@
+SERVICE 00c5af5d-1964-4e30-8f51-1956f96bd280
+  CHAR 00c5af5d-1964-4e30-8f51-1956f96bd281  handle=0x0002  props=Read
+  CHAR 00c5af5d-1964-4e30-8f51-1956f96bd282  handle=0x0004  props=Write
+  CHAR 00c5af5d-1964-4e30-8f51-1956f96bd283  handle=0x0006  props=Read
+SERVICE ab7de9be-89fe-49ad-828f-118f09df7fd0
+  CHAR ab7de9be-89fe-49ad-828f-118f09df7fd2  handle=0x0009  props=Read, Notify
+    DESC 00002902-0000-1000-8000-00805f9b34fb
+    DESC 679d5510-5a24-4dee-9557-95df80486ecb
+  CHAR 7492866c-ec3e-4619-8258-32755ffcc0f8  handle=0x000D  props=Read, Notify
+    DESC 00002902-0000-1000-8000-00805f9b34fb
+    DESC 679d5510-5a24-4dee-9557-95df80486ecb
+  CHAR cc483f51-9258-427d-a939-630c31f72b05  handle=0x0011  props=WriteWithoutResponse
+  CHAR 649d4ac9-8eb7-4e6c-af44-1ea54fe5f005  handle=0x0013  props=WriteWithoutResponse
+  CHAR 3dacbc7e-6955-40b5-8eaf-6f9809e8b379  handle=0x0015  props=WriteWithoutResponse
+  CHAR 4147423d-fdae-4df7-a4f7-d23e5df59f8d  handle=0x0017  props=WriteWithoutResponse
+  CHAR c765a961-d9d8-4d36-a20a-5315b111836a  handle=0x0019  props=Notify
+    DESC 00002902-0000-1000-8000-00805f9b34fb
+    DESC b746df8c-f358-495b-9cd2-e3bbeda4f979
+  CHAR 506d9f7d-4278-4e95-a549-326ba77657e0  handle=0x001D  props=Notify
+    DESC 00002902-0000-1000-8000-00805f9b34fb
+    DESC b746df8c-f358-495b-9cd2-e3bbeda4f979
+  CHAR d3bd69d2-841c-4241-ab15-f86f406d2a80  handle=0x0021  props=Notify
+    DESC 00002902-0000-1000-8000-00805f9b34fb
+    DESC b746df8c-f358-495b-9cd2-e3bbeda4f979
+  CHAR ab7de9be-89fe-49ad-828f-118f09df7fde  handle=0x0025  props=Read, Notify
+    DESC 00002902-0000-1000-8000-00805f9b34fb
+    DESC 679d5510-5a24-4dee-9557-95df80486ecb
+  CHAR ab7de9be-89fe-49ad-828f-118f09df7fdf  handle=0x0029  props=WriteWithoutResponse
+  CHAR cc483f51-9258-427d-a939-630c31f72b06  handle=0x002B  props=WriteWithoutResponse
+  CHAR 7492866c-ec3e-4619-8258-32755ffcc0f9  handle=0x002D  props=Read, Notify
+    DESC 00002902-0000-1000-8000-00805f9b34fb
+    DESC 679d5510-5a24-4dee-9557-95df80486ecb
+  CHAR 3dacbc7e-6955-40b5-8eaf-6f9809e8b380  handle=0x0031  props=WriteWithoutResponse
+SERVICE 00001800-0000-1000-8000-00805f9b34fb
+  CHAR 00002a00-0000-1000-8000-00805f9b34fb  handle=0x0034  props=Read
+    value=4E696E74656E646F2053776974636820322050726F20436F6E74726F6C6C6572  ascii="Nintendo Switch 2 Pro Controller"
+  CHAR 00002a01-0000-1000-8000-00805f9b34fb  handle=0x0036  props=Read
+    value=C403  ascii=".."
+SERVICE 00001801-0000-1000-8000-00805f9b34fb
