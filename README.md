@@ -2,6 +2,8 @@
 
 A Windows 11 desktop app (WPF, .NET) that connects a **Nintendo Switch 2 Pro Controller** over **Bluetooth LE**,
 shows a live input test panel and exposes the controller to games as a **virtual Xbox 360 pad** (ViGEmBus).
+It also has per-profile stick deadzones and curves, a button remap table, a DSU motion server for emulators,
+and an interface in English (default) and Spanish.
 
 The Pro Controller 2 is *not* a standard HID device over Bluetooth: it speaks a proprietary GATT protocol, so Windows
 cannot use it out of the box and `Windows.Gaming.Input` / HID libraries see nothing. This app talks to it directly through
@@ -14,18 +16,19 @@ the WinRT Bluetooth APIs. The protocol comes from community reverse engineering 
 
 | Feature | Status |
 |---|---|
-| BLE scan, connect, disconnect | Works |
-| Live test panel (21 buttons, both sticks, ZL/ZR) | Works |
+| BLE scan, connect, disconnect, auto-reconnect | Works |
+| Live test panel (21 buttons, both sticks, ZL/ZR, motion) | Works |
 | Virtual Xbox 360 pad (ViGEmBus), positional or by-letter face-button layout | Works |
 | Game rumble → controller HD rumble | Works (basic mapping) |
 | HD rumble lab (built-in samples + raw frames per actuator) | Works |
-| Capture button → F12 (Steam screenshots) | Implemented |
 | Stick deadzones and curves (inner/outer deadzone, linear, exponential, S-curve) | Works, per profile |
 | Button remapping: Xbox target, keys and key combinations (e.g. Alt+Tab), mouse buttons | Works, per profile |
-| Profiles (create, rename, delete, switch) | Works |
+| Profiles (create, rename, delete, switch) | Works; the active one is shown in the header |
 | DSU motion server for emulators (Cemuhook protocol) | Works (checked with Eden) |
 | Accelerometer / gyroscope (opt-in) | Works over BLE |
 | Battery level (0–9, charging flag) | Implemented (read from the headset report) |
+| Interface language: English (default) and Spanish | Works; logs stay in English |
+| Tray icon, start with Windows, app-side latency figure | Works |
 | Audio to the headphone jack over **USB-C** | Works natively in Windows (no app code needed) |
 | Audio to the headphone jack over **Bluetooth** | **Not solved**, see [docs/AUDIO_RESEARCH.md](docs/AUDIO_RESEARCH.md) |
 
@@ -48,14 +51,32 @@ produces `dist\Switch2ProManager.exe` (single file, no .NET runtime needed to ru
 ## Using it
 
 1. Close Steam and remove the controller from *Windows Settings → Bluetooth* if it was paired there (Windows cannot pair it).
-2. Click **Scan for devices**, hold the controller's **SYNC** button for ~3 s until the LEDs animate.
-3. Select it and click **Connect**. With *Emulate Xbox 360 pad* on, games see an "Xbox 360 Controller" (check `joy.cpl`).
+2. Click **Search for devices**, hold the controller's **SYNC** button for ~3 s until the LEDs animate.
+3. Select it in the list and click **Connect**, below the list. With *Emulate Xbox 360 pad* on, games see an
+   "Xbox 360 Controller" (check `joy.cpl`).
+
+The window has five tabs, and the active profile and the connection state are always in the header:
+
+* **General**: connection, battery, quick settings (profile management, virtual pad, DSU motion server).
+  **New** creates a profile with default values; **Save** writes the current changes to the active profile.
+* **Testing and calibration**: live sticks, buttons, vibration strength, motion sensors and the app latency figure.
+* **Mapping and deadzones**: inner/outer deadzone and response curve per stick, with a live graph, and the button
+  remap table (Xbox target, one or more keys such as Alt+Tab, or a mouse button). Click the Key cell and press the key
+  you want; `Del` clears it and `Esc` cancels.
+* **Advanced and log**: HD rumble lab, audio experiments, GATT dump and the log viewer.
+* **Settings**: window and tray behaviour, start with Windows, auto-reconnect, interface language and About.
 
 Face buttons: *positional* (default) maps Nintendo B → Xbox A, A → B, Y → X, X → Y; untick it to map by letter.
 L/R → LB/RB, ZL/ZR → LT/RT (digital: 0 or 255), −/+ → Back/Start, Home → Guide, stick clicks and D-pad as expected.
-Capture, C, GL and GR show in the test panel. By default they are not sent to the virtual pad. To press F12 with the Capture button (Steam screenshots), assign F12 to Capture in the Mapping tab.
-The **Mapping** tab can give each of them an Xbox target, one or more keys (for example Alt then Tab, captured with the keyboard) or a mouse button.
-Sticks have an inner and an outer deadzone and a response curve. Everything in the Mapping tab is saved in the active profile.
+Capture, C, GL and GR show in the test panel and are not sent to the virtual pad by default; to use the Capture button
+for Steam screenshots, assign F12 to Capture in the Mapping tab. Sticks have an inner and an outer deadzone and a
+response curve. Everything in the Mapping tab is saved in the active profile when you press Save.
+
+## Settings and logs
+
+The app stores its state in `%LOCALAPPDATA%\Switch2ProManager\settings.json`. An old `settings.json` from v1 is migrated
+automatically (its single profile becomes **Default**) and kept as `settings.v1.json.bak`. Unhandled errors and protocol
+diagnostics go to `%LOCALAPPDATA%\Switch2ProManager\logs\app.log`; the **Advanced and log** tab has a shortcut to that folder.
 
 ## Warnings
 
@@ -70,8 +91,8 @@ Sticks have an inner and an outer deadzone and a response curve. Everything in t
 ## Repository layout
 
 ```
-src/Switch2ProManager/   WPF app (MVVM): Models, Protocol, Services, ViewModels, Views
-docs/                    PROTOCOL_NOTES.md · AUDIO_RESEARCH.md · SNIFFER_SETUP.md
+src/Switch2ProManager/   WPF app (MVVM): Models, Protocol, Services, ViewModels, Views, Resources, Assets
+docs/                    PROTOCOL_NOTES.md · AUDIO_RESEARCH.md · SNIFFER_SETUP.md · DSU_OUTPUT.md · UI_SPEC.md
 research/captures/       Real captures behind the audio findings + a GATT dump of the controller
 research/tools/          Capture analysis, LTK derivation and tone-generation scripts (Python)
 scripts/publish.bat      Builds the single-file exe
@@ -79,14 +100,18 @@ scripts/publish.bat      Builds the single-file exe
 ```
 
 Code overview: `Services/ControllerScanner` (BLE advertisements), `Services/Switch2Session` (GATT connection, commands,
-rumble, battery, research helpers), `Services/XboxVirtualPad` (ViGEm mapping), `Services/HapticsService` (rumble scheduler),
-`Protocol/*` (UUIDs, report parser, HD rumble encoder), `ViewModels/MainViewModel` (UI logic).
+rumble, battery, research helpers), `Services/XboxVirtualPad` (ViGEm mapping), `Services/InputMapper` (deadzones, curves and
+routing), `Services/HapticsService` (rumble scheduler), `Services/CemuhookServer` (DSU motion server), `Services/SettingsStore`
+(profiles and settings v2), `Services/AppText` (localization), `Services/KeyCapture` (low-level keyboard hook for
+combinations), `Protocol/*` (UUIDs, report parser, HD rumble encoder), `ViewModels/MainViewModel` (UI logic).
 
 ## Research
 
 * [docs/PROTOCOL_NOTES.md](docs/PROTOCOL_NOTES.md): what is known about the BLE protocol and how much of it we verified ourselves.
 * [docs/AUDIO_RESEARCH.md](docs/AUDIO_RESEARCH.md): headphone-jack audio over Bluetooth: findings, experiments, open questions.
 * [docs/SNIFFER_SETUP.md](docs/SNIFFER_SETUP.md): hardware and step-by-step setup to capture the console↔controller traffic, the missing piece.
+* [docs/DSU_OUTPUT.md](docs/DSU_OUTPUT.md): DSU (Cemuhook) motion server: packet layout, clients tested and diagnostics.
+* [docs/UI_SPEC.md](docs/UI_SPEC.md): interface design, phase status and the differences from the original plan.
 
 Contributions that would help most: a capture of a real Switch 2 sending audio to the controller, tests on other firmware
 versions, and a second unit to confirm the measurements.
