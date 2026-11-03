@@ -15,9 +15,6 @@ public sealed class XboxVirtualPad : IDisposable
     private ViGEmClient? _client;
     private IXbox360Controller? _pad;
 
-    /// <summary>true: physical position (Nintendo B, bottom, becomes Xbox A). false: same letter (A to A).</summary>
-    public bool PositionalLayout { get; set; } = true;
-
     public bool IsRunning => _pad is not null;
 
     /// <summary>Rumble requested by the game: (large motor, small motor), 0..255.</summary>
@@ -47,36 +44,36 @@ public sealed class XboxVirtualPad : IDisposable
         }
     }
 
-    /// <summary>Called from the BLE thread for every report (low latency, bypasses the UI).</summary>
-    public void Submit(ControllerState s)
+    /// <summary>Called from the BLE thread for every report (low latency, bypasses the UI). pad comes from the InputMapper.</summary>
+    public void Submit(ControllerState s, PadOutput pad)
     {
         lock (_gate)
         {
             if (_pad is null) return;
 
-            bool Down(SwitchButtons b) => s.Has(b);
+            bool On(PadOutput f) => (pad & f) != 0;
             var p = _pad;
 
-            p.SetButtonState(Xbox360Button.A, PositionalLayout ? Down(SwitchButtons.B) : Down(SwitchButtons.A));
-            p.SetButtonState(Xbox360Button.B, PositionalLayout ? Down(SwitchButtons.A) : Down(SwitchButtons.B));
-            p.SetButtonState(Xbox360Button.X, PositionalLayout ? Down(SwitchButtons.Y) : Down(SwitchButtons.X));
-            p.SetButtonState(Xbox360Button.Y, PositionalLayout ? Down(SwitchButtons.X) : Down(SwitchButtons.Y));
+            p.SetButtonState(Xbox360Button.A, On(PadOutput.A));
+            p.SetButtonState(Xbox360Button.B, On(PadOutput.B));
+            p.SetButtonState(Xbox360Button.X, On(PadOutput.X));
+            p.SetButtonState(Xbox360Button.Y, On(PadOutput.Y));
 
-            p.SetButtonState(Xbox360Button.LeftShoulder, Down(SwitchButtons.L));
-            p.SetButtonState(Xbox360Button.RightShoulder, Down(SwitchButtons.R));
-            p.SetButtonState(Xbox360Button.Back, Down(SwitchButtons.Minus));
-            p.SetButtonState(Xbox360Button.Start, Down(SwitchButtons.Plus));
-            p.SetButtonState(Xbox360Button.Guide, Down(SwitchButtons.Home));
-            p.SetButtonState(Xbox360Button.LeftThumb, Down(SwitchButtons.LThumb));
-            p.SetButtonState(Xbox360Button.RightThumb, Down(SwitchButtons.RThumb));
-            p.SetButtonState(Xbox360Button.Up, Down(SwitchButtons.DpadUp));
-            p.SetButtonState(Xbox360Button.Down, Down(SwitchButtons.DpadDown));
-            p.SetButtonState(Xbox360Button.Left, Down(SwitchButtons.DpadLeft));
-            p.SetButtonState(Xbox360Button.Right, Down(SwitchButtons.DpadRight));
+            p.SetButtonState(Xbox360Button.LeftShoulder, On(PadOutput.LB));
+            p.SetButtonState(Xbox360Button.RightShoulder, On(PadOutput.RB));
+            p.SetButtonState(Xbox360Button.Back, On(PadOutput.Back));
+            p.SetButtonState(Xbox360Button.Start, On(PadOutput.Start));
+            p.SetButtonState(Xbox360Button.Guide, On(PadOutput.Guide));
+            p.SetButtonState(Xbox360Button.LeftThumb, On(PadOutput.L3));
+            p.SetButtonState(Xbox360Button.RightThumb, On(PadOutput.R3));
+            p.SetButtonState(Xbox360Button.Up, On(PadOutput.Up));
+            p.SetButtonState(Xbox360Button.Down, On(PadOutput.Down));
+            p.SetButtonState(Xbox360Button.Left, On(PadOutput.Left));
+            p.SetButtonState(Xbox360Button.Right, On(PadOutput.Right));
 
-            // ZL/ZR are digital on this controller: full or released Xbox trigger
-            p.SetSliderValue(Xbox360Slider.LeftTrigger, (byte)(Down(SwitchButtons.ZL) ? 255 : 0));
-            p.SetSliderValue(Xbox360Slider.RightTrigger, (byte)(Down(SwitchButtons.ZR) ? 255 : 0));
+            // Triggers: full or released Xbox trigger (ZL/ZR are digital on this controller)
+            p.SetSliderValue(Xbox360Slider.LeftTrigger, (byte)(On(PadOutput.LT) ? 255 : 0));
+            p.SetSliderValue(Xbox360Slider.RightTrigger, (byte)(On(PadOutput.RT) ? 255 : 0));
 
             // XInput: up = +32767
             p.SetAxisValue(Xbox360Axis.LeftThumbX, ToAxis(s.LeftX));

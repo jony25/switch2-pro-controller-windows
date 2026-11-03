@@ -1,18 +1,16 @@
 using System.Runtime.InteropServices;
+using Switch2ProManager.Models;
 
 namespace Switch2ProManager.Services;
 
 /// <summary>
-/// Simulates key presses with SendInput. Used so the controller's Capture button presses F12
-/// (Steam's default screenshot key). Does not work on elevated windows (UIPI) unless this app is elevated too,
-/// and Steam must have F12 assigned to its screenshot shortcut.
+/// Sends keys and mouse buttons with SendInput, for the remap table. Does not work on elevated windows (UIPI)
+/// unless this app is elevated too.
 /// </summary>
 public static class KeyboardInjector
 {
     private const uint InputKeyboard = 1;
     private const uint KeyUp = 0x0002;
-    private const ushort VkF12 = 0x7B;
-    private const ushort ScanF12 = 0x58;
 
     [StructLayout(LayoutKind.Sequential)] private struct MouseInput { public int dx, dy; public uint mouseData, dwFlags, time; public IntPtr dwExtraInfo; }
     [StructLayout(LayoutKind.Sequential)] private struct KeybdInput { public ushort wVk, wScan; public uint dwFlags, time; public IntPtr dwExtraInfo; }
@@ -28,21 +26,50 @@ public static class KeyboardInjector
     [DllImport("user32.dll", SetLastError = true)]
     private static extern uint SendInput(uint nInputs, Input[] pInputs, int cbSize);
 
-    private static void Send(ushort vk, ushort scan, bool up)
+    [DllImport("user32.dll")]
+    private static extern uint MapVirtualKey(uint code, uint mapType);
+
+    private const uint KeyExtended = 0x0001;
+    private const uint InputMouse = 0;
+    private const uint MouseLeftDown = 0x0002, MouseLeftUp = 0x0004;
+    private const uint MouseRightDown = 0x0008, MouseRightUp = 0x0010;
+    private const uint MouseMiddleDown = 0x0020, MouseMiddleUp = 0x0040;
+    private const uint MouseXDown = 0x0080, MouseXUp = 0x0100;
+
+    /// <summary>Presses or releases a key by virtual-key code. The scan code is filled in for games that read it.</summary>
+    public static void SendKey(int vk, bool down)
     {
+        uint scan = MapVirtualKey((uint)vk, 0);
+        uint flags = (down ? 0u : KeyUp) | (IsExtendedKey(vk) ? KeyExtended : 0u);
         var input = new Input
         {
             type = InputKeyboard,
-            u = new InputUnion { ki = new KeybdInput { wVk = vk, wScan = scan, dwFlags = up ? KeyUp : 0 } }
+            u = new InputUnion { ki = new KeybdInput { wVk = (ushort)vk, wScan = (ushort)scan, dwFlags = flags } }
         };
         SendInput(1, new[] { input }, Marshal.SizeOf<Input>());
     }
 
-    /// <summary>Presses and releases F12 (40 ms hold so Steam registers it).</summary>
-    public static void TapF12() => _ = Task.Run(async () =>
+    /// <summary>Presses or releases a mouse button. Only one button per call.</summary>
+    public static void SendMouse(MouseOutput button, bool down)
     {
-        Send(VkF12, ScanF12, up: false);
-        await Task.Delay(40);
-        Send(VkF12, ScanF12, up: true);
-    });
+        var (flag, data) = button switch
+        {
+            MouseOutput.Left => (down ? MouseLeftDown : MouseLeftUp, 0u),
+            MouseOutput.Right => (down ? MouseRightDown : MouseRightUp, 0u),
+            MouseOutput.Middle => (down ? MouseMiddleDown : MouseMiddleUp, 0u),
+            MouseOutput.X1 => (down ? MouseXDown : MouseXUp, 1u),
+            MouseOutput.X2 => (down ? MouseXDown : MouseXUp, 2u),
+            _ => (0u, 0u),
+        };
+        if (flag == 0) return;
+        var input = new Input
+        {
+            type = InputMouse,
+            u = new InputUnion { mi = new MouseInput { dwFlags = flag, mouseData = data } }
+        };
+        SendInput(1, new[] { input }, Marshal.SizeOf<Input>());
+    }
+
+    // Arrows, Insert, Delete, Home, End, Page Up/Down, right Ctrl/Alt and the Windows keys need the extended-key flag.
+    private static bool IsExtendedKey(int vk) => vk is >= 0x21 and <= 0x28 or 0x2D or 0x2E or 0x5B or 0x5C or 0xA3 or 0xA5;
 }

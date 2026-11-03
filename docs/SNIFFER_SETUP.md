@@ -30,16 +30,15 @@ You also need: the **Switch 2 console**, your **controller**, and a Windows PC (
 
 **Makerdiary-type dongle (UF2 bootloader, e.g. the "nRF52840 Micro Dev Kit USB Dongle" sold on Amazon by GeeekPi)**
 
-Nordic's *Programmer* app cannot flash these boards (confirmed by a buyer's review); use the UF2 bootloader instead:
+The official Makerdiary guide ([wiki](https://wiki.makerdiary.com/nrf52840-mdk-usb-dongle/guides/ble-sniffer/installation/)) flashes this board with the UF2 bootloader, by drag and drop:
 
-1. Hold the button while plugging the dongle into the PC. A removable drive (UF2BOOT or similar) appears and the LED indicates bootloader mode.
-2. Download the **BLE sniffer `.uf2`** published by Makerdiary (the `firmware/ble_sniffer/` folder of
-   <https://github.com/makerdiary/nrf52840-mdk-usb-dongle>, see its *BLE sniffer* guide) and drag it onto the drive.
-3. The LED blinks for a few seconds and the dongle reboots. Windows now shows a serial port (COM*n*) for the sniffer.
+1. Push and hold the button while plugging the dongle into the PC; release it once connected. The RGB LED turns **green** and a drive called **UF2BOOT** appears.
+2. Drag `nrf_sniffer_for_bluetooth_le_<version>.uf2` from the `firmware/ble_sniffer/` folder of
+   <https://github.com/makerdiary/nrf52840-mdk-usb-dongle> onto the drive. The LED blinks **red** quickly while flashing.
+3. Unplug and replug the dongle. The sniffer starts running. The button now acts as RESET; double-click it to re-enter the bootloader.
 
 Do not convert Nordic's PCA10059 `.hex` yourself unless you have no other choice: that firmware was built for a different bootloader
-layout. If you must, Microsoft's `uf2conv.py` (microsoft/uf2) is what other users use. Check the dongle's UF2 bootloader version
-(Makerdiary recommends 0.7.1+) in its documentation.
+layout. If you must, Microsoft's `uf2conv.py` (microsoft/uf2) is what other users use.
 
 The board is bare: keep it on a non-conductive surface (or in a small case) so it cannot short against anything.
 
@@ -51,18 +50,16 @@ The board is bare: keep it on a non-conductive surface (or in a small case) so i
 
 ### Install the Wireshark plugin
 
-Either with Nordic's command-line tool (as documented by users of firmware 4.1.1):
+For the Makerdiary board, use the plugin folder shipped in the Makerdiary repository (`tools/ble_sniffer/extcap/`), as in the official guide:
 
-```powershell
-nrfutil install ble-sniffer
-nrfutil ble-sniffer bootstrap --extcap-dir "$env:APPDATA\Wireshark\extcap"
-```
+1. Open a command window in `tools/ble_sniffer/extcap/` and run `py -3 -m pip install -r requirements.txt`.
+2. Copy the contents of `tools/ble_sniffer/extcap/` into Wireshark's *Personal Extcap* folder (Wireshark → Help → About → Folders).
+3. Check it works: `nrf_sniffer_ble.bat --extcap-interfaces` should print `extcap {version=4.1.1}…`.
 
-or manually: copy the package's `extcap` folder contents into Wireshark's *Personal Extcap* folder (Wireshark → Help → About → Folders) and
-install the Python requirements shipped with the package.
+Wireshark **3.4.7 or later** is required by the Makerdiary guide. Restart Wireshark, press F5, and enable **View → Interface Toolbars → nRF Sniffer for Bluetooth LE**.
+Copy `tools/ble_sniffer/Profile_nRF_Sniffer_Bluetooth_LE` into the *Personal configuration* `profiles` folder and select it under Edit → Configuration Profiles.
 
-Restart Wireshark. You should see **nRF Sniffer for Bluetooth LE COM*n*** on the start page. Enable **View → Interface Toolbars → nRF Sniffer for Bluetooth LE**.
-Importing Nordic's Wireshark profile (included in the package) gives you useful columns and filters.
+The `nrfutil ble-sniffer` route is for Nordic's own PCA10059 firmware package; it is not the path for this board.
 
 ## 3. Before capturing
 
@@ -95,7 +92,7 @@ Pairing the controller to the console again is a normal operation; nothing is lo
 
 ## 5. Capture 2: an audio session (gives you the answer)
 
-1. In the sniffer toolbar enter the LTK in the **Key** field (try type *LTK* / *Legacy LTK* / *SC LTK* as offered, and the byte order that worked).
+1. In the sniffer toolbar set **Key** to *Legacy LTK* and enter the LTK in the **Value** field. The plugin's own validation says the value is 16 bytes of hex, prefixed with `0x`, in **big-endian** order, zero-padded in front if shorter. So the bytes of the LTK must be written in reverse of the order they have in `A1 XOR B1`. This is still a hypothesis until a capture confirms it; if decryption fails, try the other order.
 2. Start capturing, then make the controller reconnect to the console (press a button on the controller). On reconnection the console just
    re-enables encryption with the stored key; you should now see decrypted ATT traffic.
 3. Perform a **scripted sequence** and write down the time of each step:

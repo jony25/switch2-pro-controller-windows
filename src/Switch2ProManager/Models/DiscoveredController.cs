@@ -1,4 +1,5 @@
-using Switch2ProManager.Protocol;
+﻿using Switch2ProManager.Protocol;
+using Switch2ProManager.Services;
 
 namespace Switch2ProManager.Models;
 
@@ -21,8 +22,8 @@ public sealed record DiscoveredController(ulong Address, ushort ProductId, short
 
     public string Hint => Mode switch
     {
-        AdvertisingMode.Pairing => $"Pairing mode (SYNC) · {Rssi} dBm",
-        AdvertisingMode.ReconnectThisPc => $"Reconnecting to this PC · {Rssi} dBm",
-        _ => "Looking for another host: hold SYNC for 3 s"
+        AdvertisingMode.Pairing => AppText.Format("Device.Pairing", Rssi),
+        AdvertisingMode.ReconnectThisPc => AppText.Format("Device.Reconnect", Rssi),
+        _ => AppText.Get("Device.Other")
     };
 }

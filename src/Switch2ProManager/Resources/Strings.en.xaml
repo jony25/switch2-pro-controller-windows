@@ -1,0 +1,170 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <!-- English strings. Keep the keys identical to Strings.es.xaml. Logs are not here: they stay in English. -->
+
+    <sys:String x:Key="Tab.General">General</sys:String>
+    <sys:String x:Key="Tab.Test">Testing and calibration</sys:String>
+    <sys:String x:Key="Tab.Advanced">Advanced and log</sys:String>
+    <sys:String x:Key="Tab.Settings">Settings</sys:String>
+
+    <sys:String x:Key="Status.Disconnected">Disconnected</sys:String>
+    <sys:String x:Key="Status.Scanning">Searching…</sys:String>
+    <sys:String x:Key="Status.Connecting">Connecting…</sys:String>
+    <sys:String x:Key="Status.Connected">Connected</sys:String>
+    <sys:String x:Key="Scan.Start">Search for devices</sys:String>
+    <sys:String x:Key="Scan.Stop">Stop searching</sys:String>
+    <sys:String x:Key="Btn.Connect">Connect</sys:String>
+    <sys:String x:Key="Btn.Disconnect">Disconnect</sys:String>
+    <sys:String x:Key="Tip.Connect">Available when a controller that can connect is selected.</sys:String>
+    <sys:String x:Key="Tip.NeedsConnection">Only available while the controller is connected.</sys:String>
+    <sys:String x:Key="Hint.Search">Press “Search for devices” and hold SYNC on the controller for about 3 s.</sys:String>
+    <sys:String x:Key="Label.Devices">Devices found</sys:String>
+
+    <sys:String x:Key="Card.Connection">Connection</sys:String>
+    <sys:String x:Key="Card.Battery">Battery</sys:String>
+    <sys:String x:Key="Card.Quick">Quick settings</sys:String>
+    <sys:String x:Key="Card.Sticks">Sticks and triggers</sys:String>
+    <sys:String x:Key="Card.Buttons">Buttons</sys:String>
+    <sys:String x:Key="Card.Rumble">Vibration</sys:String>
+    <sys:String x:Key="Card.Motion">Motion sensors</sys:String>
+    <sys:String x:Key="Card.Window">Window and tray</sys:String>
+    <sys:String x:Key="Card.Language">Language</sys:String>
+
+    <sys:String x:Key="Battery.None">Battery: —</sys:String>
+    <sys:String x:Key="Battery.Level">Battery: level {0}/9</sys:String>
+    <sys:String x:Key="Battery.Charging"> · charging</sys:String>
+    <sys:String x:Key="Battery.External"> · external power</sys:String>
+    <sys:String x:Key="Battery.Low">Controller battery is low (≈20 %, level {0}/9).</sys:String>
+    <sys:String x:Key="Battery.Critical">Controller battery is very low (≈10 %, level {0}/9). Charge it soon.</sys:String>
+
+    <sys:String x:Key="Pad.Inactive">Virtual controller inactive</sys:String>
+    <sys:String x:Key="Pad.Active">Virtual Xbox 360 controller active</sys:String>
+    <sys:String x:Key="Pad.Unavailable">ViGEmBus not available (is the driver installed?)</sys:String>
+    <sys:String x:Key="Pad.Disabled">Virtual controller disabled</sys:String>
+
+    <sys:String x:Key="Group.Virtual">Virtual controller</sys:String>
+    <sys:String x:Key="Opt.XboxEmu">Emulate Xbox 360 controller (ViGEm)</sys:String>
+    <sys:String x:Key="Opt.Positional">Positional layout (Nintendo B → Xbox A)</sys:String>
+    <sys:String x:Key="Group.System">System</sys:String>
+    <sys:String x:Key="Opt.StartWin">Start with Windows (minimized to the tray)</sys:String>
+    <sys:String x:Key="Opt.AutoRec">Reconnect automatically to this PC (never pairs again)</sys:String>
+    <sys:String x:Key="Group.Emulators">Emulators</sys:String>
+    <sys:String x:Key="Opt.Dsu">DSU motion server (127.0.0.1:26760)</sys:String>
+
+    <sys:String x:Key="Stick.Left">Left stick</sys:String>
+    <sys:String x:Key="Stick.Right">Right stick</sys:String>
+    <sys:String x:Key="Trigger.ZL">ZL · digital</sys:String>
+    <sys:String x:Key="Trigger.ZR">ZR · digital</sys:String>
+    <sys:String x:Key="Tip.Latency">Time the app takes to pass each controller report to the virtual controller (median of the last 100 samples). Excludes Bluetooth, Windows and the game.</sys:String>
+    <sys:String x:Key="Latency.Empty">App latency: —</sys:String>
+    <sys:String x:Key="Latency.Value">App latency: {0:0.00} ms</sys:String>
+
+    <sys:String x:Key="Group.Face">Face buttons</sys:String>
+    <sys:String x:Key="Group.Shoulder">Shoulders and triggers</sys:String>
+    <sys:String x:Key="Group.Dpad">D-pad and stick clicks</sys:String>
+    <sys:String x:Key="Group.Paddles">Back paddles</sys:String>
+    <sys:String x:Key="Button.Capture">Capture</sys:String>
+
+    <sys:String x:Key="Opt.GameRumble">Game vibration (through the virtual Xbox controller)</sys:String>
+    <sys:String x:Key="Rumble.Strength">Intensity: {0:0} %</sys:String>
+    <sys:String x:Key="Hint.Rumble">Applies to game vibration, the test pulse and the HD lab. The built-in samples play at their fixed intensity.</sys:String>
+    <sys:String x:Key="Btn.TestRumble">Test vibration</sys:String>
+
+    <sys:String x:Key="Opt.Motion">Read accelerometer and gyroscope (experimental)</sys:String>
+    <sys:String x:Key="Motion.Off">Motion: off</sys:String>
+    <sys:String x:Key="Motion.NoData">Motion: no data</sys:String>
+    <sys:String x:Key="Motion.Values">Accel. (g)  X {0,6:F2}  Y {1,6:F2}  Z {2,6:F2}   ·   Gyro (°/s)  X {3,7:F1}  Y {4,7:F1}  Z {5,7:F1}</sys:String>
+
+    <sys:String x:Key="Exp.Lab">HD vibration lab (experimental)</sys:String>
+    <sys:String x:Key="Lab.Samples">Built-in vibration samples (documented command that the console also uses):</sys:String>
+    <sys:String x:Key="Lab.Warning">Direct HD frames per actuator. Don't keep high amplitudes on for long. The code → Hz mapping is not documented: explore it.</sys:String>
+    <sys:String x:Key="Lab.Send">Send lab vibration</sys:String>
+    <sys:String x:Key="Lab.HighFreq">High band frequency (code): {0:0}</sys:String>
+    <sys:String x:Key="Lab.LowFreq">Low band frequency (code): {0:0}</sys:String>
+    <sys:String x:Key="Lab.LeftHigh">Left · high band amplitude: {0:0}</sys:String>
+    <sys:String x:Key="Lab.LeftLow">Left · low band amplitude: {0:0}</sys:String>
+    <sys:String x:Key="Lab.RightHigh">Right · high band amplitude: {0:0}</sys:String>
+    <sys:String x:Key="Lab.RightLow">Right · low band amplitude: {0:0}</sys:String>
+
+    <sys:String x:Key="Exp.Audio">Research: Bluetooth audio (experimental)</sys:String>
+    <sys:String x:Key="Audio.Status">Status: the controller accepts writes to the output characteristic, but it only buzzes; no sound reaches the headphones. See docs/AUDIO_RESEARCH.md. Test with the headphones away from your ears and the level set to «quiet».</sys:String>
+    <sys:String x:Key="Opt.NormalLevel">Normal level (louder)</sys:String>
+    <sys:String x:Key="Btn.Tone">Send test tone (3 s)</sys:String>
+    <sys:String x:Key="Btn.HeadsetCapture">Capture headset input (10 s)</sys:String>
+    <sys:String x:Key="Btn.Gatt">Save GATT dump</sys:String>
+
+    <sys:String x:Key="Exp.Log">Event log</sys:String>
+    <sys:String x:Key="Btn.OpenLogs">Open log folder</sys:String>
+    <sys:String x:Key="Btn.ClearView">Clear view</sys:String>
+    <sys:String x:Key="Tip.ClearView">Only clears the list on screen. The log file is not changed.</sys:String>
+
+    <sys:String x:Key="Opt.MinTray">Minimizing hides the window to the notification area</sys:String>
+    <sys:String x:Key="Opt.CloseTray">Closing the window keeps the app in the notification area (off = exit)</sys:String>
+    <sys:String x:Key="Opt.TrayNotif">Show notification area alerts (battery, hints)</sys:String>
+    <sys:String x:Key="Hint.TrayExit">The “Exit” option in the tray menu always closes the app. If you open a second copy, the window that is already open is shown.</sys:String>
+    <sys:String x:Key="Group.Profile">Active profile</sys:String>
+    <sys:String x:Key="Group.ManageProfiles">Manage profiles</sys:String>
+    <sys:String x:Key="Btn.Profile.New">New</sys:String>
+    <sys:String x:Key="Btn.Profile.Save">Save</sys:String>
+    <sys:String x:Key="Btn.Profile.Delete">Delete</sys:String>
+    <sys:String x:Key="Tip.Profile.Delete">The default profile cannot be deleted.</sys:String>
+    <sys:String x:Key="Hint.Profile">Changes are stored in the profile when you press Save.</sys:String>
+    <sys:String x:Key="Profile.Name">Profile {0}</sys:String>
+    <sys:String x:Key="Tab.Mapping">Mapping and deadzones</sys:String>
+    <sys:String x:Key="Card.Mapping.Sticks">Sticks: deadzones and curves</sys:String>
+    <sys:String x:Key="Card.Mapping.Buttons">Button remapping</sys:String>
+    <sys:String x:Key="Hint.Sticks">The inner deadzone removes centre drift; the outer one shortens the maximum travel. The curve changes the response: exponential gives more precision for small movements.</sys:String>
+    <sys:String x:Key="Hint.Mapping">Default keeps the current behaviour. Keys and mouse buttons are sent even when the virtual controller is off. In the Key column, click the cell and then press the key you want; Del clears it and Esc cancels.</sys:String>
+    <sys:String x:Key="Stick.Inner">Inner deadzone: {0:0} %</sys:String>
+    <sys:String x:Key="Stick.Outer">Outer deadzone: {0:0} %</sys:String>
+    <sys:String x:Key="Stick.Curve">Curve</sys:String>
+    <sys:String x:Key="Stick.Exponent">Exponent: {0:0.0}</sys:String>
+    <sys:String x:Key="Btn.Reset">Reset</sys:String>
+    <sys:String x:Key="Curve.Linear">Linear</sys:String>
+    <sys:String x:Key="Curve.Exponential">Exponential</sys:String>
+    <sys:String x:Key="Curve.SCurve">S-curve</sys:String>
+    <sys:String x:Key="Table.Input">Input</sys:String>
+    <sys:String x:Key="Table.Target">Xbox target</sys:String>
+    <sys:String x:Key="Table.Key">Key</sys:String>
+    <sys:String x:Key="Table.Mouse">Mouse</sys:String>
+    <sys:String x:Key="Target.Default">Default</sys:String>
+    <sys:String x:Key="Target.None">Unassigned</sys:String>
+    <sys:String x:Key="Mouse.None">None</sys:String>
+    <sys:String x:Key="Mouse.Left">Left</sys:String>
+    <sys:String x:Key="Mouse.Right">Right</sys:String>
+    <sys:String x:Key="Mouse.Middle">Middle</sys:String>
+    <sys:String x:Key="Key.Capture">Press a key or combination…</sys:String>
+    <sys:String x:Key="Warn.Guide">A button sends Guide. Home already opens Guide by default; if Home is moved away from Guide, there is no other way to open it.</sys:String>
+    <sys:String x:Key="Warn.DupKey">Several inputs use the key {0}. Allowed, but they press together.</sys:String>
+    <sys:String x:Key="Btn.Profile.Rename">Rename</sys:String>
+    <sys:String x:Key="Btn.Profile.Accept">OK</sys:String>
+    <sys:String x:Key="Btn.Profile.Cancel">Cancel</sys:String>
+    <sys:String x:Key="Card.About">About</sys:String>
+    <sys:String x:Key="About.Version">Version {0}</sys:String>
+    <sys:String x:Key="About.Docs">Documentation: the docs/ folder of the repository and README.md.</sys:String>
+    <sys:String x:Key="About.Credits">The protocol builds on community research: ndeadly/switch2_controller_research, mlstr0m/switch2bridge-macos, PRX-24hz/switch2pro-telemetry, and SDL's HD rumble encoding.</sys:String>
+    <sys:String x:Key="About.Trademark">Switch and Nintendo are trademarks of Nintendo. This project is independent and not affiliated with Nintendo.</sys:String>
+    <sys:String x:Key="About.License">MIT license.</sys:String>
+    <sys:String x:Key="Opt.Language">Interface language</sys:String>
+    <sys:String x:Key="Hint.LogsEnglish">Logs are always written in English.</sys:String>
+
+    <sys:String x:Key="Device.Pairing">Pairing mode (SYNC) · {0} dBm</sys:String>
+    <sys:String x:Key="Device.Reconnect">Reconnecting to this PC · {0} dBm</sys:String>
+    <sys:String x:Key="Device.Other">Looking for another device: hold SYNC for 3 s</sys:String>
+
+    <sys:String x:Key="Sample.1">1 · low rumble</sys:String>
+    <sys:String x:Key="Sample.2">2 · alarm</sys:String>
+    <sys:String x:Key="Sample.3">3 · soft click</sys:String>
+    <sys:String x:Key="Sample.4">4 · low battery</sys:String>
+    <sys:String x:Key="Sample.5">5 · hard click</sys:String>
+    <sys:String x:Key="Sample.6">6 · short beep</sys:String>
+    <sys:String x:Key="Sample.7">7 · high beep</sys:String>
+    <sys:String x:Key="Sample.0">0 · stop</sys:String>
+
+    <sys:String x:Key="Tray.Show">Show window</sys:String>
+    <sys:String x:Key="Tray.Connect">Connect</sys:String>
+    <sys:String x:Key="Tray.Disconnect">Disconnect</sys:String>
+    <sys:String x:Key="Tray.Exit">Exit</sys:String>
+    <sys:String x:Key="Tray.Hint">Still running in the notification area. Use its menu to exit.</sys:String>
+</ResourceDictionary>

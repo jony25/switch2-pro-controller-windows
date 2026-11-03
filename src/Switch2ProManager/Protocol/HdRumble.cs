@@ -18,7 +18,7 @@ public static class HdRumble
 
     public static byte[] EncodeFrame(Band b)
     {
-        ulong v = (ulong)Math.Clamp(b.HighFreq, 0, 1023)
+        ulong v = (ulong)(uint)Math.Clamp(b.HighFreq, 0, 1023)
                 | ((ulong)Math.Clamp(b.HighAmp, 0, MaxAmp) << 10)
                 | ((ulong)Math.Clamp(b.LowFreq, 0, 1023) << 20)
                 | ((ulong)Math.Clamp(b.LowAmp, 0, MaxAmp) << 30);

@@ -20,6 +20,10 @@ the WinRT Bluetooth APIs. The protocol comes from community reverse engineering 
 | Game rumble → controller HD rumble | Works (basic mapping) |
 | HD rumble lab (built-in samples + raw frames per actuator) | Works |
 | Capture button → F12 (Steam screenshots) | Implemented |
+| Stick deadzones and curves (inner/outer deadzone, linear, exponential, S-curve) | Works, per profile |
+| Button remapping: Xbox target, keys and key combinations (e.g. Alt+Tab), mouse buttons | Works, per profile |
+| Profiles (create, rename, delete, switch) | Works |
+| DSU motion server for emulators (Cemuhook protocol) | Works (checked with Eden) |
 | Accelerometer / gyroscope (opt-in) | Works over BLE |
 | Battery level (0–9, charging flag) | Implemented (read from the headset report) |
 | Audio to the headphone jack over **USB-C** | Works natively in Windows (no app code needed) |
@@ -49,7 +53,9 @@ produces `dist\Switch2ProManager.exe` (single file, no .NET runtime needed to ru
 
 Face buttons: *positional* (default) maps Nintendo B → Xbox A, A → B, Y → X, X → Y; untick it to map by letter.
 L/R → LB/RB, ZL/ZR → LT/RT (digital: 0 or 255), −/+ → Back/Start, Home → Guide, stick clicks and D-pad as expected.
-Capture, C, GL and GR show in the test panel but are not sent to the virtual pad (Capture can press F12 instead).
+Capture, C, GL and GR show in the test panel. By default they are not sent to the virtual pad. To press F12 with the Capture button (Steam screenshots), assign F12 to Capture in the Mapping tab.
+The **Mapping** tab can give each of them an Xbox target, one or more keys (for example Alt then Tab, captured with the keyboard) or a mouse button.
+Sticks have an inner and an outer deadzone and a response curve. Everything in the Mapping tab is saved in the active profile.
 
 ## Warnings
 

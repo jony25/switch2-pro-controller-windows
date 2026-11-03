@@ -18,7 +18,6 @@ public static class InputReportParser
 {
     private const int Center = 2048;      // uncalibrated stick centre
     private const int MaxDelta = 1750;    // approximate usable travel (one user measured radius 1765-1810 on 12 bits)
-    private const float Deadzone = 0.05f;
 
     public static bool TryParse(ReadOnlySpan<byte> d, out ControllerState state)
     {
@@ -30,8 +29,8 @@ public static class InputReportParser
 
         Unpack12(d.Slice(10, 3), out int lx, out int ly);
         Unpack12(d.Slice(13, 3), out int rx, out int ry);
-        var (nlx, nly) = RadialDeadzone(Norm(lx), Norm(ly));
-        var (nrx, nry) = RadialDeadzone(Norm(rx), Norm(ry));
+        // Raw -1..1 values. Deadzones and curves are applied later by the InputMapper (they are per profile).
+        float nlx = Norm(lx), nly = Norm(ly), nrx = Norm(rx), nry = Norm(ry);
 
         int gauge = d.Length >= 33 ? BinaryPrimitives.ReadUInt16LittleEndian(d.Slice(31, 2)) : 0;
 
@@ -45,7 +44,7 @@ public static class InputReportParser
             short r3 = BinaryPrimitives.ReadInt16LittleEndian(d.Slice(0x36, 2));
             short r4 = BinaryPrimitives.ReadInt16LittleEndian(d.Slice(0x38, 2));
             short r5 = BinaryPrimitives.ReadInt16LittleEndian(d.Slice(0x3A, 2));
-            motion = (r0 | r1 | r2 | r3 | r4 | r5) != 0;
+            motion = r0 != 0 || r1 != 0 || r2 != 0 || r3 != 0 || r4 != 0 || r5 != 0;
             const float G = 8.0f / 32767f, Dps = 2000.0f / 32767f;
             ax = r0 * G; ay = r1 * G; az = r2 * G;          // accelerometer first...
             gx = r3 * Dps; gy = r4 * Dps; gz = r5 * Dps;    // ...gyroscope second
@@ -63,12 +62,4 @@ public static class InputReportParser
     }
 
     private static float Norm(int raw) => Math.Clamp((raw - Center) / (float)MaxDelta, -1f, 1f);
-
-    private static (float, float) RadialDeadzone(float x, float y)
-    {
-        float m = MathF.Sqrt(x * x + y * y);
-        if (m <= Deadzone) return (0f, 0f);
-        float scale = (m - Deadzone) / (1f - Deadzone) / m;
-        return (Math.Clamp(x * scale, -1f, 1f), Math.Clamp(y * scale, -1f, 1f));
-    }
 }

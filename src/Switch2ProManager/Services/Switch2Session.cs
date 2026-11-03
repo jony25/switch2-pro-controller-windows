@@ -468,8 +468,38 @@ public sealed class Switch2Session : IDisposable
             if (_device is not null) _device.ConnectionStatusChanged -= OnConnectionStatusChanged;
         }
         catch { }
-        _session?.Dispose();
-        _device?.Dispose();   // releasing the last handle makes Windows drop the BLE link
+
+        // Windows keeps the BLE link open while any service, session or device handle is alive,
+        // so the release runs in the background: stop notifications, then close every GATT object.
+        _ = ReleaseAsync(_session, _device, _services, _input, _cmdResponse, _headsetIn);
+        _session = null;
+        _device = null;
+        _services = null;
         _connParamsRequest = null;
+    }
+
+    private static async Task ReleaseAsync(GattSession? session, BluetoothLEDevice? device,
+        IReadOnlyList<GattDeviceService>? services, params GattCharacteristic?[] subscribed)
+    {
+        try
+        {
+            if (session is not null) session.MaintainConnection = false;
+            foreach (var c in subscribed)
+            {
+                if (c is null) continue;
+                try { await c.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.None); }
+                catch { }
+            }
+        }
+        finally
+        {
+            if (services is not null)
+                foreach (var s in services)
+                {
+                    try { s.Dispose(); } catch { }
+                }
+            try { session?.Dispose(); } catch { }
+            try { device?.Dispose(); } catch { }
+        }
     }
 }

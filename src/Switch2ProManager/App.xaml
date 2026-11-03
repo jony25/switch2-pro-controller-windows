@@ -1,7 +1,9 @@
 <Application x:Class="Switch2ProManager.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="Views/MainWindow.xaml"
-             ThemeMode="System">
-    <!-- ThemeMode="System": Windows 11 Fluent style, follows the system light/dark setting. -->
+             ThemeMode="Dark">
+    <!-- Dark theme only (decided by the user). Colour tokens: Resources/Theme.Dark.xaml, see docs/UI_SPEC.md, section 2. -->
+    <Application.Resources>
+        <ResourceDictionary Source="Resources/Theme.Dark.xaml"/>
+    </Application.Resources>
 </Application>

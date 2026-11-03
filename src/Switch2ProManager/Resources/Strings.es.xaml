@@ -1,0 +1,170 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <!-- Spanish strings. Keep the keys identical to Strings.en.xaml. Logs are not here: they stay in English. -->
+
+    <sys:String x:Key="Tab.General">General</sys:String>
+    <sys:String x:Key="Tab.Test">Pruebas y calibración</sys:String>
+    <sys:String x:Key="Tab.Advanced">Avanzado y registro</sys:String>
+    <sys:String x:Key="Tab.Settings">Ajustes</sys:String>
+
+    <sys:String x:Key="Status.Disconnected">Desconectado</sys:String>
+    <sys:String x:Key="Status.Scanning">Buscando…</sys:String>
+    <sys:String x:Key="Status.Connecting">Conectando…</sys:String>
+    <sys:String x:Key="Status.Connected">Conectado</sys:String>
+    <sys:String x:Key="Scan.Start">Buscar dispositivos</sys:String>
+    <sys:String x:Key="Scan.Stop">Detener búsqueda</sys:String>
+    <sys:String x:Key="Btn.Connect">Conectar</sys:String>
+    <sys:String x:Key="Btn.Disconnect">Desconectar</sys:String>
+    <sys:String x:Key="Tip.Connect">Disponible cuando hay un mando seleccionado que se puede conectar.</sys:String>
+    <sys:String x:Key="Tip.NeedsConnection">Solo está disponible con el mando conectado.</sys:String>
+    <sys:String x:Key="Hint.Search">Pulsa «Buscar dispositivos» y mantén SYNC en el mando unos 3 s.</sys:String>
+    <sys:String x:Key="Label.Devices">Dispositivos encontrados</sys:String>
+
+    <sys:String x:Key="Card.Connection">Conexión</sys:String>
+    <sys:String x:Key="Card.Battery">Batería</sys:String>
+    <sys:String x:Key="Card.Quick">Ajustes rápidos</sys:String>
+    <sys:String x:Key="Card.Sticks">Sticks y gatillos</sys:String>
+    <sys:String x:Key="Card.Buttons">Botones</sys:String>
+    <sys:String x:Key="Card.Rumble">Vibración</sys:String>
+    <sys:String x:Key="Card.Motion">Sensores de movimiento</sys:String>
+    <sys:String x:Key="Card.Window">Ventana y bandeja</sys:String>
+    <sys:String x:Key="Card.Language">Idioma</sys:String>
+
+    <sys:String x:Key="Battery.None">Batería: —</sys:String>
+    <sys:String x:Key="Battery.Level">Batería: nivel {0}/9</sys:String>
+    <sys:String x:Key="Battery.Charging"> · cargando</sys:String>
+    <sys:String x:Key="Battery.External"> · alimentación externa</sys:String>
+    <sys:String x:Key="Battery.Low">La batería del mando está baja (≈20 %, nivel {0}/9).</sys:String>
+    <sys:String x:Key="Battery.Critical">La batería del mando está muy baja (≈10 %, nivel {0}/9). Cárgalo pronto.</sys:String>
+
+    <sys:String x:Key="Pad.Inactive">Mando virtual inactivo</sys:String>
+    <sys:String x:Key="Pad.Active">Mando virtual Xbox 360 activo</sys:String>
+    <sys:String x:Key="Pad.Unavailable">ViGEmBus no disponible (¿está instalado el controlador?)</sys:String>
+    <sys:String x:Key="Pad.Disabled">Mando virtual desactivado</sys:String>
+
+    <sys:String x:Key="Group.Virtual">Mando virtual</sys:String>
+    <sys:String x:Key="Opt.XboxEmu">Emular mando de Xbox 360 (ViGEm)</sys:String>
+    <sys:String x:Key="Opt.Positional">Disposición posicional (B de Nintendo → A de Xbox)</sys:String>
+    <sys:String x:Key="Group.System">Sistema</sys:String>
+    <sys:String x:Key="Opt.StartWin">Iniciar con Windows (minimizado en la bandeja)</sys:String>
+    <sys:String x:Key="Opt.AutoRec">Reconectar automáticamente a este PC (nunca vuelve a registrar)</sys:String>
+    <sys:String x:Key="Group.Emulators">Emuladores</sys:String>
+    <sys:String x:Key="Opt.Dsu">Servidor de movimiento DSU (127.0.0.1:26760)</sys:String>
+
+    <sys:String x:Key="Stick.Left">Stick izquierdo</sys:String>
+    <sys:String x:Key="Stick.Right">Stick derecho</sys:String>
+    <sys:String x:Key="Trigger.ZL">ZL · digital</sys:String>
+    <sys:String x:Key="Trigger.ZR">ZR · digital</sys:String>
+    <sys:String x:Key="Tip.Latency">Tiempo que tarda la app en pasar cada informe del mando al mando virtual (mediana de las últimas 100 muestras). No incluye el Bluetooth, Windows ni el juego.</sys:String>
+    <sys:String x:Key="Latency.Empty">Latencia de la app: —</sys:String>
+    <sys:String x:Key="Latency.Value">Latencia de la app: {0:0.00} ms</sys:String>
+
+    <sys:String x:Key="Group.Face">Frontales</sys:String>
+    <sys:String x:Key="Group.Shoulder">Hombros y gatillos</sys:String>
+    <sys:String x:Key="Group.Dpad">Cruceta y pulsación de sticks</sys:String>
+    <sys:String x:Key="Group.Paddles">Paletas traseras</sys:String>
+    <sys:String x:Key="Button.Capture">Captura</sys:String>
+
+    <sys:String x:Key="Opt.GameRumble">Vibración de los juegos (a través del mando Xbox virtual)</sys:String>
+    <sys:String x:Key="Rumble.Strength">Intensidad: {0:0} %</sys:String>
+    <sys:String x:Key="Hint.Rumble">Se aplica a la vibración de los juegos, al pulso de prueba y al laboratorio HD. Las muestras integradas suenan con su intensidad fija.</sys:String>
+    <sys:String x:Key="Btn.TestRumble">Probar vibración</sys:String>
+
+    <sys:String x:Key="Opt.Motion">Leer acelerómetro y giroscopio (experimental)</sys:String>
+    <sys:String x:Key="Motion.Off">Movimiento: desactivado</sys:String>
+    <sys:String x:Key="Motion.NoData">Movimiento: sin datos</sys:String>
+    <sys:String x:Key="Motion.Values">Acel. (g)  X {0,6:F2}  Y {1,6:F2}  Z {2,6:F2}   ·   Giro (°/s)  X {3,7:F1}  Y {4,7:F1}  Z {5,7:F1}</sys:String>
+
+    <sys:String x:Key="Exp.Lab">Laboratorio de vibración HD (experimental)</sys:String>
+    <sys:String x:Key="Lab.Samples">Muestras de vibración integradas (comando documentado que también usa la consola):</sys:String>
+    <sys:String x:Key="Lab.Warning">Tramas HD directas por actuador. No dejes amplitudes altas mucho rato. La equivalencia código → Hz no está documentada: explórala.</sys:String>
+    <sys:String x:Key="Lab.Send">Enviar vibración del laboratorio</sys:String>
+    <sys:String x:Key="Lab.HighFreq">Frecuencia de la banda alta (código): {0:0}</sys:String>
+    <sys:String x:Key="Lab.LowFreq">Frecuencia de la banda baja (código): {0:0}</sys:String>
+    <sys:String x:Key="Lab.LeftHigh">Izquierdo · amplitud banda alta: {0:0}</sys:String>
+    <sys:String x:Key="Lab.LeftLow">Izquierdo · amplitud banda baja: {0:0}</sys:String>
+    <sys:String x:Key="Lab.RightHigh">Derecho · amplitud banda alta: {0:0}</sys:String>
+    <sys:String x:Key="Lab.RightLow">Derecho · amplitud banda baja: {0:0}</sys:String>
+
+    <sys:String x:Key="Exp.Audio">Investigación: audio Bluetooth (experimental)</sys:String>
+    <sys:String x:Key="Audio.Status">Estado: el mando acepta escrituras en la característica de salida, pero solo zumba; no llega sonido a los auriculares. Ver docs/AUDIO_RESEARCH.md. Prueba con los auriculares fuera de los oídos y el nivel en «suave».</sys:String>
+    <sys:String x:Key="Opt.NormalLevel">Nivel normal (más fuerte)</sys:String>
+    <sys:String x:Key="Btn.Tone">Enviar tono de prueba (3 s)</sys:String>
+    <sys:String x:Key="Btn.HeadsetCapture">Capturar entrada de auriculares (10 s)</sys:String>
+    <sys:String x:Key="Btn.Gatt">Guardar volcado GATT</sys:String>
+
+    <sys:String x:Key="Exp.Log">Registro de eventos</sys:String>
+    <sys:String x:Key="Btn.OpenLogs">Abrir carpeta de registros</sys:String>
+    <sys:String x:Key="Btn.ClearView">Borrar vista</sys:String>
+    <sys:String x:Key="Tip.ClearView">Solo borra la lista de la pantalla. El archivo de registro no se modifica.</sys:String>
+
+    <sys:String x:Key="Opt.MinTray">Minimizar oculta la ventana en el área de notificación</sys:String>
+    <sys:String x:Key="Opt.CloseTray">Cerrar la ventana mantiene la app en el área de notificación (desactivado = salir)</sys:String>
+    <sys:String x:Key="Opt.TrayNotif">Mostrar avisos del área de notificación (batería, ayudas)</sys:String>
+    <sys:String x:Key="Hint.TrayExit">La opción «Salir» del menú de la bandeja siempre cierra la app. Si abres una segunda copia, se muestra la ventana que ya está abierta.</sys:String>
+    <sys:String x:Key="Group.Profile">Perfil activo</sys:String>
+    <sys:String x:Key="Group.ManageProfiles">Gestionar perfiles</sys:String>
+    <sys:String x:Key="Btn.Profile.New">Nuevo</sys:String>
+    <sys:String x:Key="Btn.Profile.Save">Guardar</sys:String>
+    <sys:String x:Key="Btn.Profile.Delete">Eliminar</sys:String>
+    <sys:String x:Key="Tip.Profile.Delete">El perfil predeterminado no se puede eliminar.</sys:String>
+    <sys:String x:Key="Hint.Profile">Los cambios se guardan en el perfil al pulsar Guardar.</sys:String>
+    <sys:String x:Key="Profile.Name">Perfil {0}</sys:String>
+    <sys:String x:Key="Tab.Mapping">Mapeo y zonas muertas</sys:String>
+    <sys:String x:Key="Card.Mapping.Sticks">Sticks: zonas muertas y curvas</sys:String>
+    <sys:String x:Key="Card.Mapping.Buttons">Remapeo de botones</sys:String>
+    <sys:String x:Key="Hint.Sticks">La zona muerta interna elimina el temblor del centro; la externa acorta el recorrido máximo. La curva cambia la respuesta: la exponencial da más precisión en los movimientos pequeños.</sys:String>
+    <sys:String x:Key="Hint.Mapping">Predeterminado mantiene el comportamiento actual. Las teclas y el ratón se envían aunque el mando virtual esté desactivado. Pulsa una tecla en la columna Tecla y luego la tecla que quieras; Supr la quita y Esc cancela.</sys:String>
+    <sys:String x:Key="Stick.Inner">Zona muerta interna: {0:0} %</sys:String>
+    <sys:String x:Key="Stick.Outer">Zona muerta externa: {0:0} %</sys:String>
+    <sys:String x:Key="Stick.Curve">Curva</sys:String>
+    <sys:String x:Key="Stick.Exponent">Exponente: {0:0.0}</sys:String>
+    <sys:String x:Key="Btn.Reset">Restablecer</sys:String>
+    <sys:String x:Key="Curve.Linear">Lineal</sys:String>
+    <sys:String x:Key="Curve.Exponential">Exponencial</sys:String>
+    <sys:String x:Key="Curve.SCurve">Curva S</sys:String>
+    <sys:String x:Key="Table.Input">Entrada</sys:String>
+    <sys:String x:Key="Table.Target">Destino Xbox</sys:String>
+    <sys:String x:Key="Table.Key">Tecla</sys:String>
+    <sys:String x:Key="Table.Mouse">Ratón</sys:String>
+    <sys:String x:Key="Target.Default">Predeterminado</sys:String>
+    <sys:String x:Key="Target.None">Sin asignar</sys:String>
+    <sys:String x:Key="Mouse.None">Ninguno</sys:String>
+    <sys:String x:Key="Mouse.Left">Izquierdo</sys:String>
+    <sys:String x:Key="Mouse.Right">Derecho</sys:String>
+    <sys:String x:Key="Mouse.Middle">Central</sys:String>
+    <sys:String x:Key="Key.Capture">Pulsa una tecla o combinación…</sys:String>
+    <sys:String x:Key="Warn.Guide">Un botón envía Guía. Home ya abre la Guía por defecto; si quitas Home de Guía, no quedará otra forma de abrirla.</sys:String>
+    <sys:String x:Key="Warn.DupKey">Varias entradas usan la tecla {0}. Se permite, pero se pulsan a la vez.</sys:String>
+    <sys:String x:Key="Btn.Profile.Rename">Renombrar</sys:String>
+    <sys:String x:Key="Btn.Profile.Accept">Aceptar</sys:String>
+    <sys:String x:Key="Btn.Profile.Cancel">Cancelar</sys:String>
+    <sys:String x:Key="Card.About">Acerca de</sys:String>
+    <sys:String x:Key="About.Version">Versión {0}</sys:String>
+    <sys:String x:Key="About.Docs">Documentación: carpeta docs/ del repositorio y README.md.</sys:String>
+    <sys:String x:Key="About.Credits">El protocolo se basa en investigación comunitaria: ndeadly/switch2_controller_research, mlstr0m/switch2bridge-macos, PRX-24hz/switch2pro-telemetry y la codificación de vibración HD de SDL.</sys:String>
+    <sys:String x:Key="About.Trademark">Switch y Nintendo son marcas de Nintendo. Este proyecto es independiente y no está afiliado a Nintendo.</sys:String>
+    <sys:String x:Key="About.License">Licencia MIT.</sys:String>
+    <sys:String x:Key="Opt.Language">Idioma de la interfaz</sys:String>
+    <sys:String x:Key="Hint.LogsEnglish">Los registros siempre se escriben en inglés.</sys:String>
+
+    <sys:String x:Key="Device.Pairing">Modo emparejamiento (SYNC) · {0} dBm</sys:String>
+    <sys:String x:Key="Device.Reconnect">Reconectando a este PC · {0} dBm</sys:String>
+    <sys:String x:Key="Device.Other">Busca otro equipo: mantén SYNC 3 s</sys:String>
+
+    <sys:String x:Key="Sample.1">1 · grave</sys:String>
+    <sys:String x:Key="Sample.2">2 · alarma</sys:String>
+    <sys:String x:Key="Sample.3">3 · clic suave</sys:String>
+    <sys:String x:Key="Sample.4">4 · batería baja</sys:String>
+    <sys:String x:Key="Sample.5">5 · clic fuerte</sys:String>
+    <sys:String x:Key="Sample.6">6 · pitido corto</sys:String>
+    <sys:String x:Key="Sample.7">7 · pitido agudo</sys:String>
+    <sys:String x:Key="Sample.0">0 · parar</sys:String>
+
+    <sys:String x:Key="Tray.Show">Mostrar ventana</sys:String>
+    <sys:String x:Key="Tray.Connect">Conectar</sys:String>
+    <sys:String x:Key="Tray.Disconnect">Desconectar</sys:String>
+    <sys:String x:Key="Tray.Exit">Salir</sys:String>
+    <sys:String x:Key="Tray.Hint">Sigue en ejecución en el área de notificación. Usa su menú para salir.</sys:String>
+</ResourceDictionary>
