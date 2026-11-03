@@ -5,6 +5,9 @@ on:
   push:
     tags: ['v*']
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -22,3 +25,38 @@ jobs:
         with:
           name: Switch2ProManager-win-x64
           path: dist/Switch2ProManager.exe
+      - name: Create release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Switch 2 Pro Manager ${{ github.ref_name }}
+          files: dist/Switch2ProManager.exe
+          fail_on_unmatched_files: true
+          body: |
+            Windows 11 app that connects a Nintendo Switch 2 Pro Controller over Bluetooth LE and exposes it to games
+            as a virtual Xbox 360 pad (ViGEmBus).
+
+            ### Download
+            `Switch2ProManager.exe` is a single self-contained file (win-x64): no .NET runtime needed.
+
+            1. Install [ViGEmBus](https://github.com/nefarius/ViGEmBus/releases) (required for the virtual pad).
+            2. Run the exe. SmartScreen warns because the file is not signed: *More info -> Run anyway*.
+            3. In the app press **Search for devices**, hold **SYNC** on the controller for about 3 s, then **Connect**.
+
+            ### Highlights
+            - BLE scan, connect, disconnect and auto-reconnect.
+            - Virtual Xbox 360 pad, positional or by-letter face buttons.
+            - Per-profile stick deadzones and response curves, with a live graph.
+            - Button remapping: Xbox target, key combinations (for example Alt+Tab) and mouse buttons.
+            - Profiles (create, rename, delete, switch); the active one is in the header.
+            - DSU motion server for emulators (Cemuhook protocol).
+            - HD rumble lab, battery level, interface in English and Spanish.
+            - Tray icon, start with Windows and an app-side latency figure.
+
+            ### Known limitations
+            - Audio over Bluetooth is still unsolved (USB-C audio works natively). See `docs/AUDIO_RESEARCH.md`.
+            - Controller-to-PC Bluetooth latency cannot be measured; only app-side latency is shown.
+            - The binary is unsigned.
+
+            Full documentation: `README.md`, `docs/UI_SPEC.md`, `docs/DSU_OUTPUT.md`.
+
