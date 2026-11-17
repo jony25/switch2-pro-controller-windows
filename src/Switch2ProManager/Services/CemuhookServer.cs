@@ -52,6 +52,10 @@ public sealed class CemuhookServer : IDisposable
     {
         if (_socket is not null) return;
         var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        // Windows: a datagram sent to a client that has closed its socket comes back as "port unreachable", and the
+        // next ReceiveFrom then fails with ConnectionReset. Turned off, the server keeps listening after a client quits.
+        const int SIO_UDP_CONNRESET = -1744830452;   // _WSAIOW(IOC_VENDOR, 12)
+        if (OperatingSystem.IsWindows()) socket.IOControl(SIO_UDP_CONNRESET, new byte[] { 0, 0, 0, 0 }, null);
         try { socket.Bind(new IPEndPoint(IPAddress.Loopback, Port)); }
         catch { socket.Dispose(); throw; }
 
@@ -124,6 +128,7 @@ public sealed class CemuhookServer : IDisposable
         {
             int length;
             try { length = socket.ReceiveFrom(buffer, ref remote); }
+            catch (SocketException e) when (e.SocketErrorCode == SocketError.ConnectionReset) { continue; }   // a client quit
             catch { break; }                  // the socket was closed by Stop()
 
             if (length < HeaderLength + 4 || buffer[0] != 'D' || buffer[1] != 'S' || buffer[2] != 'U' || buffer[3] != 'C')
@@ -231,12 +236,16 @@ public sealed class CemuhookServer : IDisposable
         // Touch points (56..67) stay zero.
 
         BinaryPrimitives.WriteInt64LittleEndian(p.AsSpan(68), _clock.Elapsed.Ticks / 10);   // microseconds
-        WriteFloat(p, 76, s.AccelX);
-        WriteFloat(p, 80, s.AccelY);
-        WriteFloat(p, 84, s.AccelZ);
+        // Motion in the axes DSU clients expect, the DualShock 4's as DS4Windows and PadForge send them: x right, y out of
+        // the face, z away from the player, the acceleration as gravity reads (lying flat: y = -1 g); pitch about x,
+        // yaw positive turning right, roll positive with the right side down. From this controller's axes (x right,
+        // y toward the USB-C port, z out of the face, the acceleration as a push: lying flat z = +1 g).
+        WriteFloat(p, 76, -s.AccelX);
+        WriteFloat(p, 80, -s.AccelZ);
+        WriteFloat(p, 84, s.AccelY);
         WriteFloat(p, 88, s.GyroX);                  // pitch
-        WriteFloat(p, 92, s.GyroY);                  // yaw
-        WriteFloat(p, 96, s.GyroZ);                  // roll
+        WriteFloat(p, 92, -s.GyroZ);                 // yaw
+        WriteFloat(p, 96, s.GyroY);                  // roll
         return Seal(p);
     }
 

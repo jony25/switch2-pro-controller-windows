@@ -44,8 +44,8 @@ A subscriber expires after 5 seconds without a new `0x100002` request. Only slot
 | D-pad, +, −, L3, R3, L, R, ZL, ZR, Home | bits as in the community spec | Eden reads the same bits (its source comments name them Share, L3, R3, Options, Up, Right, Down, Left, L2, R2, L1, R1) |
 | Face buttons | **by physical position with the Nintendo letters**: bit7 = Y (left), bit6 = B (bottom), bit5 = A (right), bit4 = X (top) | Matches Eden's reading of the bits (Square = left, Cross = bottom, Circle = right, Triangle = top); **corrected** after reading Eden's source |
 | Analog buttons | 255 when pressed, 0 otherwise, order Y, B, A, X, R1, L1, R2, L2 | Community spec. Eden's struct gives a different order from offset 28 onward; see *Open points* |
-| Accelerometer | `AccelX/Y/Z` in g | Units from the spec; axis direction **not verified** |
-| Gyroscope | `GyroX` → pitch, `GyroY` → yaw, `GyroZ` → roll, in deg/s | **Not verified**: which controller axis is pitch, yaw or roll, and the signs |
+| Accelerometer | in g, the DualShock 4's axes DSU clients expect: x = −`AccelX`, y = −`AccelZ`, z = `AccelY` (x right, y out of the face, z away from the player; the gravity as read, lying flat y = −1 g) | Units from the spec; axes as Dolphin's DSU client labels them and PadForge sends them. Checked against mkw-recomp's DSU client: lying flat reads y ≈ −1 |
+| Gyroscope | in deg/s: pitch = `GyroX`, yaw = −`GyroZ`, roll = `GyroY` (pitch about x, yaw positive turning right, roll positive with the right side down) | The controller's own axes are right-handed about x right, y toward the USB-C port, z out of the face (`ControllerState`) |
 | Touch | zero | Not available on this controller |
 
 ## Verified
@@ -57,6 +57,6 @@ A subscriber expires after 5 seconds without a new `0x100002` request. Only slot
 ## Open points (need Eden and the controller)
 
 1. ~~**Eden shows the motion**~~ **Checked:** with the controller connected, Eden receives the packets and the motion works.
-2. **Gyro axes and signs:** tilt the controller and compare with the emulator. The PadForge project (another DSU server) negates the accelerometer X, Y, Z and the gyro yaw and roll before sending, against the sensor frame it reads. Our frame is not known to match theirs, so this is a hint to test, not a fix.
+2. **Gyro axes and signs:** now sent in the DualShock 4's axes (see *Mapping*); before, the packets carried the controller's own axes, so an emulator saw it standing on its end. Still to check by tilting in Eden.
 3. **Analog button order:** the community spec puts Y, B, A, X at offsets 28–31 but Eden's struct puts R1 there. The digital bits agree between the two sources, so the digital buttons are the reliable path. If an analog-only feature in Eden misbehaves, this is the first place to look.
 4. **Packet rate:** the server sends at most about 125 packets per second.
